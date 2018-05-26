@@ -45,6 +45,7 @@ contract ERC721 {
     function approve(address _to, uint256 _tokenId) public;
     function transfer(address _to, uint256 _tokenId) public;
     function safeTransferFrom(address _from, address _to, uint256 _tokenId) public;
+    function allowance(address _owner,uint256 _tokenId) public view returns (bool);
 
     event Transfer(address from, address to, uint256 tokenId);
     event Approval(address owner, address approved, uint256 tokenId);
@@ -190,6 +191,9 @@ contract CardOwnership is CardBase, ERC721 {
         require(_to != address(this));
         require(_owns(msg.sender, _tokenId));
         _transfer(msg.sender, _to, _tokenId);
+    }
+    function allowance(address _claimant,uint256 _tokenId) public view returns (bool){
+        return cardSalesToApproved[_tokenId] == _claimant;
     }
     function approve(address _to,uint256 _tokenId) public whenNotPaused{
         require(_owns(msg.sender, _tokenId));

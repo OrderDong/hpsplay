@@ -68,6 +68,7 @@ contract ERC20Interface {
 contract ERC721Interface {
     function ownerOf(uint256 tokenId) public view returns (address);
     function safeTransferFrom(address from, address to, uint256 tokenId) public;
+    function allowance(address _owner,uint256 _tokenId) public view returns (bool);
 }
 
 contract EggCardMarket is Ownable, Pausable {
