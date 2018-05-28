@@ -187,6 +187,7 @@ contract EggCardMarket is Ownable, Pausable {
         uint256 index = _getAuctionIndexByToken(tokenId);
         auctionIndexs[index] = auctionIndexs[auctionIndexs.length.sub(1)];
         delete auctionIndexs[auctionIndexs.length.sub(1)];
+        auctionIndexs.length--;
         emit CardAuctionCancelled(auctionId, tokenId, auctionSeller,now);
     }
 
@@ -225,10 +226,11 @@ contract EggCardMarket is Ownable, Pausable {
         );
         uint256 auctionId = auctionByTokenId[tokenId].id;
         delete auctionByTokenId[tokenId];
-        ownershipAuctionCount[msg.sender] = ownershipAuctionCount[msg.sender].sub(1);
+        ownershipAuctionCount[seller] = ownershipAuctionCount[seller].sub(1);
         uint256 index = _getAuctionIndexByToken(tokenId);
         auctionIndexs[index] = auctionIndexs[auctionIndexs.length.sub(1)];
         delete auctionIndexs[auctionIndexs.length.sub(1)];
+        auctionIndexs.length--;
         emit CardAuctionSuccessful(auctionId, tokenId, seller, price, msg.sender,now);
     }
     function countAuctionOf(address _owner) public view returns (uint256 count) {

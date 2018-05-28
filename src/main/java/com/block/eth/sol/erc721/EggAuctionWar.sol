@@ -424,20 +424,19 @@ contract EggAuctionCode is EggAuctionWar{
         emit ExchangeCreated(_auctionId,msg.sender,owner,publicationFeeInWei.mul(_count),now,_count,_eType);
     }
 
-    function exchangeDDCToEgg(uint256 _count,uint8 _eType,uint8 _level) public whenNotPaused {
+	function exchangeDDCToEgg(uint256 _count,uint8 _eType,uint8 _level) public whenNotPaused {
         require(_count > 0);
         require(_eType >= 0 && _eType<=20);
-        uint256 eggCount = _getEggCount(msg.sender,_eType);
-        require(eggCount > _count);
-        require(acceptedToken.balanceOf(msg.sender) >= _count);
+        // uint256 eggCount = _getEggCount(msg.sender,_eType);
+        //require(eggCount > _count);
+        require(acceptedToken.balanceOf(msg.sender) >= publicationFeeInWei.mul(_count));
 
         require(acceptedToken.transferFrom(
                 msg.sender,
                 owner,
                 publicationFeeInWei.mul(_count)
             ));
-        require(_transferEggMk(msg.sender,owner,_count,_eType,_level));
+        require(_transferEggMk(owner,msg.sender,_count,_eType,_level));
         emit ExchangeCreated(0,owner,msg.sender,publicationFeeInWei.mul(_count),now,_count,_eType);
     }
-
 }
