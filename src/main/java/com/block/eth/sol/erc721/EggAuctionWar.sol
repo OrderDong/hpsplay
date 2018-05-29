@@ -134,6 +134,16 @@ contract EggAuction is Ownable,Pausable{
         }
         return i;
     }
+    function _getAuctionOwnerCount(address _owner) internal view returns (uint256){
+        uint256 i;
+        uint256 count;
+        for(i=0;i<indexArr.length;i++){
+            if(auctionOnwer[indexArr[i]].seller == _owner){
+                count = count.add(1);
+            }
+        }
+        return count;
+    }
     function createEggAuction(uint256 _price,uint256 expiresAt,uint256 _count,string _name)
     public payable whenNotPaused {
         require(msg.sender != address(0));
@@ -194,7 +204,8 @@ contract EggAuction is Ownable,Pausable{
         return indexArr;
     }
     function getAuctionsByOwner(address _owner) external view returns (uint256[]) {
-        uint256[] memory result = new uint256[](indexArr.length);
+        uint256 ownerAuCount = _getAuctionOwnerCount(_owner);
+        uint256[] memory result = new uint256[](ownerAuCount);
         uint256 i;
         uint256 re=0;
         for(i=0;i<indexArr.length;i++){
