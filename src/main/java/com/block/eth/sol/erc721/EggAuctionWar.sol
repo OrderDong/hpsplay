@@ -102,7 +102,7 @@ contract EggAuction is Ownable,Pausable{
     uint256 public auctionIndex;
 
 
-    uint256 public publicationFeeInWei = 10 ether;
+    uint256 public publicationFeeInWei = 1 ether;
 
     /* EVENTS */
     event AuctionCreated(
@@ -182,7 +182,7 @@ contract EggAuction is Ownable,Pausable{
             uint256 sellerProceeds = price.sub(saleFeeAmount);
             seller.transfer(sellerProceeds);
         }
-        require(acceptedToken.transferFrom(seller,msg.sender,_count));
+        require(acceptedToken.transferFrom(seller,msg.sender,_count.mul(publicationFeeInWei)));
         if(auctionOnwer[_auctionId].salesCount == _count){
             uint256 i = _getIndex(_auctionId);
             indexArr[i] = indexArr[indexArr.length-1];
