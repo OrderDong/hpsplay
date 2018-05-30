@@ -258,12 +258,12 @@ contract CardCore is CardOwnership {
         createdCount++;
         _createCard(0, 0,0,cardOwner);
     }
-    function createCard(uint256 _eType,uint256 _attrId,uint8 _level, address _owner) external onlyCEO {
+    function createCard(uint256 _eType,uint256 _attrId,uint8 _level, address _owner) external onlyCEO returns (uint256 tokenId)  {
         address cardOwner = _owner;
         if (cardOwner == address(0)) {
             cardOwner = ceoAddress;
         }
-        _createCard(_eType,_attrId,_level,cardOwner);
+        tokenId = _createCard(_eType,_attrId,_level,cardOwner);
     }
     function unpause() public onlyCEO whenPaused {
         require(newContractAddress == address(0));
