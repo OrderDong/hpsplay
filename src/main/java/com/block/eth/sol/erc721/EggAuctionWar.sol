@@ -263,7 +263,7 @@ contract EggAuctionWar is EggAuction{
         require(acceptedToken.balanceOf(msg.sender) >=1 &&
         acceptedToken.balanceOf(msg.sender) >= ownerCount[msg.sender].add(_count));
         require(
-            acceptedToken.transferFrom(msg.sender,owner,_count)
+            acceptedToken.transferFrom(msg.sender,owner,_count.mul(publicationFeeInWei))
         );
         eggWar[msg.sender] =  EggWar({owner:msg.sender,count:_count,time:now});
         emit WarCreated(msg.sender,_count,now);
@@ -272,6 +272,16 @@ contract EggAuctionWar is EggAuction{
         require(eggWar[_to].count>0);
         delete eggWar[_to];
         emit WarExecuted(_to,_cardTokenId,_count,now);
+    }
+    function getWarByOwner(address _owner) external view returns (
+        address owner,
+        uint256 count,
+        uint256 time
+    ) {
+        EggWar storage war = eggWar[_owner];
+        owner =war.owner;
+        count = war.count;
+        time = war.time;
     }
 }
 contract EggAuctionCode is EggAuctionWar{
